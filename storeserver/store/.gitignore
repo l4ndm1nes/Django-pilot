@@ -1,0 +1,103 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+*.db
+
+# Unit test / coverage reports
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Environments
+.env
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre
+.pyre/
+
+# Pytest
+.pytest_cache/
+
+# celery
+celerybeat-schedule
+
+# Django migrations (if not in version control)
+*/migrations/
+
+# Database
+*.sqlite3
+
+# PyCharm files
+.idea/
+*.iml
+
+# Local stack files
+docker-compose.override.yml
+# Flask specific
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Encrypted files
+*.key
+*.pem
+
+# Docker files
+**/data/
+**/logs/
+**/tmp/
+**/*.bak
+
+# Ignore stripe config folder
+stripe-config/
+
+# Ignore Python-style files
+**/.env
+**/.flaskenv
+**/.djangoenv
+
+# Ignore temporary files
+*.swp
+*.swo
+*.bak
+*.tmp
+*~
+*.log
+*.cache
+
+# Database
+*.sqlite3

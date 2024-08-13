@@ -14,14 +14,31 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
-from products.views import index
-from products.views import products
+from django.urls import include, path
+from rest_framework.authtoken.views import obtain_auth_token
 
+from orders.views import stripe_webhook_view
+from products.views import IndexView, ProductListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, name='index'),
-    path('products/', products, name='products'),
+    path('', IndexView.as_view(), name='index'),
+    path('products/', include('products.urls', namespace='products')),
+    path('users/', include('users.urls', namespace='users')),
+    path('accounts/', include('allauth.urls')),
+    path('orders/', include('orders.urls', namespace='orders')),
+    path('webhook/stripe/', stripe_webhook_view, name='stripe-webhook'),
+    path('api/', include('api.urls', namespace='api')),
+    path('api-token-auth/', obtain_auth_token),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

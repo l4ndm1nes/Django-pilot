@@ -1,0 +1,14 @@
+[
+    {
+        "model": "socialaccount.socialapp",
+        "pk": 1,
+        "fields": {
+            "provider": "github",
+            "name": "GitHub",
+            "client_id": "Ov23li3OaVq5k51ZsA4i",
+            "secret": "181e16ac1071061cd6a9386addb591250c8963fd",
+            "key": "",
+            "sites": [1]
+        }
+    }
+]

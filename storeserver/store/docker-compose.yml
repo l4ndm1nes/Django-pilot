@@ -1,0 +1,77 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: store_db
+      POSTGRES_USER: store_username
+      POSTGRES_PASSWORD: store_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - custom_network
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    networks:
+      - custom_network
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    networks:
+      - custom_network
+
+  celery:
+    build: .
+    command: celery -A store worker --loglevel=info --pool=solo
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    networks:
+      - custom_network
+
+  celery-beat:
+    build: .
+    command: celery -A store beat --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    networks:
+      - custom_network
+
+  stripe:
+    image: stripe/stripe-cli
+    command: listen --forward-to http://web:8000/webhook/stripe/
+    environment:
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+    depends_on:
+      - web
+    volumes:
+      - ./stripe-config:/root/.config/stripe
+      - .:/app
+    networks:
+      - custom_network
+
+volumes:
+  postgres_data:
+
+networks:
+  custom_network:
+    driver: bridge
